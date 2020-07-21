@@ -28,21 +28,34 @@ class IndexComponent extends Component {
 		});
 	}
 	handleChangeOD(evt) {
+		this.filterData(evt)
     this.setState({
 			checkboxCheckedOD: evt.target.checked,
 		});
 	}
 	handleChangeVC(evt) {
+		this.filterData(evt)
     this.setState({
 			checkboxCheckedVC: evt.target.checked,
 		});
+	}
+	filterData() {
+		if (this.state.checkboxCheckedOD === false && this.state.checkboxCheckedVC === false) {
+			return this.props.rawData.filter(element => element)
+		} else if (this.state.checkboxCheckedOD === true && this.state.checkboxCheckedVC === false) {
+			return this.props.rawData.filter(element => element.roomService === 'OD')
+		} else if (this.state.checkboxCheckedOD === false && this.state.checkboxCheckedVC === true) {
+			return this.props.rawData.filter(element => element.roomService === 'VC')
+		} else {
+			return this.props.rawData.filter(element => element)
+		}
 	}
 
 	render() {
 
 		return (
 			<div className="container">
-				{/* <Row style={{justifyContent: "center"}}>
+				<Row style={{justifyContent: "center"}}>
 					<Form.Check
 						label="OD"
 						value="OD"
@@ -57,9 +70,9 @@ class IndexComponent extends Component {
 						checked={this.state.checkboxCheckedVC}
 						onChange={this.handleChangeVC}
 						id="checkbox-2" />
-				</Row> */}
+				</Row>
 				<Row>
-					{this.props.rawData.map((v, index) => {
+					{this.filterData().map((v, index) => {
 				return	<div
 								key={index}
 								className="col-md-2">
